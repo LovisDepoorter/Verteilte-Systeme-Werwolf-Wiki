@@ -15,7 +15,7 @@ export class CardService {
       description: 'Die Werwölfe sind die Hauptschurken des Spiels. Jede Nacht erwachen sie gemeinsam und wählen ein Opfer aus dem Dorf.',
       specialAbilities: [
         'Erwacht jede Nacht mit allen anderen Werwölfen',
-        'Tötet gemeinsam einen Dorfbewohner pro Nacht',
+        'Tötet gemeinsam mit anderen Werwölfen einen Dorfbewohner pro Nacht',
         'Kennt alle anderen Werwölfe'
       ],
       wakeUpOrder: 1,

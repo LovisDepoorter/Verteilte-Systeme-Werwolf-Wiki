@@ -9,7 +9,7 @@ export class AuthService {
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
   // Hardcoded password - für Production sollte dies über ein Backend laufen !BACKEND
-  private readonly correctPassword = 'duesterwald2026';
+  private readonly correctPassword = 'duesterwald2026'; 
 
   constructor() {}
 
