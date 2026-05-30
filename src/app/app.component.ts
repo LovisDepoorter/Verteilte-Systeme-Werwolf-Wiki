@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
+  imports: [RouterOutlet, CommonModule],
   template: `
     <div class="app-container">
       <!-- Blood drips animation -->
-      <div class="blood-drips" aria-hidden="true">
+      <div class="blood-drips" [class.hidden]="!bloodEffectEnabled" aria-hidden="true">
         <div class="blood-drip" style="left: 10%; animation-delay: 0s;"></div>
         <div class="blood-drip" style="left: 30%; animation-delay: 1.5s;"></div>
         <div class="blood-drip" style="left: 50%; animation-delay: 3s;"></div>
@@ -17,6 +18,19 @@ import { RouterOutlet } from '@angular/router';
       </div>
 
       <header class="header texture-overlay">
+        <button
+          class="blood-toggle"
+          (click)="toggleBloodEffect()"
+          [class.active]="bloodEffectEnabled"
+          [attr.aria-label]="bloodEffectEnabled ? 'Blutfluss deaktivieren' : 'Blutfluss aktivieren'"
+          [title]="bloodEffectEnabled ? 'Blutfluss deaktivieren' : 'Blutfluss aktivieren'"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" [attr.fill]="bloodEffectEnabled ? 'currentColor' : 'none'" [attr.stroke]="bloodEffectEnabled ? 'none' : 'currentColor'" stroke-width="2">
+            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/>
+          </svg>
+          <span class="slash" *ngIf="!bloodEffectEnabled"></span>
+        </button>
+
         <div class="header-content">
           <h1 class="logo blood-text">
             <pre class="wolf-ascii" aria-label="Wolf ASCII Art">
@@ -80,6 +94,61 @@ import { RouterOutlet } from '@angular/router';
       height: 100%;
       pointer-events: none;
       z-index: 999;
+      transition: opacity 0.3s ease-out;
+    }
+
+    .blood-drips.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .blood-toggle {
+      position: absolute;
+      top: 1.5rem;
+      right: 1.5rem;
+      width: 3rem;
+      height: 3rem;
+      background: var(--black-soft);
+      border: 2px solid var(--blood-red);
+      border-radius: 0;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease-out;
+      z-index: 100;
+      padding: 0;
+    }
+
+    .blood-toggle:hover {
+      background: var(--blood-dark);
+      box-shadow: 0 0 20px var(--shadow-blood);
+      transform: scale(1.1);
+    }
+
+    .blood-toggle:focus {
+      outline: 2px solid var(--blood-light);
+      outline-offset: 2px;
+    }
+
+    .blood-toggle svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      color: var(--blood-light);
+      transition: all 0.2s ease-out;
+    }
+
+    .blood-toggle.active svg {
+      filter: drop-shadow(0 0 8px var(--blood-red));
+    }
+
+    .slash {
+      position: absolute;
+      width: 2px;
+      height: 2.5rem;
+      background: var(--blood-light);
+      transform: rotate(-45deg);
+      pointer-events: none;
     }
 
     .header {
@@ -184,6 +253,18 @@ import { RouterOutlet } from '@angular/router';
     }
 
     @media (max-width: 768px) {
+      .blood-toggle {
+        top: 1rem;
+        right: 1rem;
+        width: 2.5rem;
+        height: 2.5rem;
+      }
+
+      .blood-toggle svg {
+        width: 1.25rem;
+        height: 1.25rem;
+      }
+
       .logo {
         font-size: 1.5rem;
         gap: 1rem;
@@ -215,4 +296,9 @@ import { RouterOutlet } from '@angular/router';
 })
 export class AppComponent {
   title = 'Werwölfe von Düsterwald Wiki';
+  bloodEffectEnabled = true;
+
+  toggleBloodEffect(): void {
+    this.bloodEffectEnabled = !this.bloodEffectEnabled;
+  }
 }

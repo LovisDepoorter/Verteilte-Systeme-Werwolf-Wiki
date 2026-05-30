@@ -22,7 +22,7 @@ export class CardService {
       interactions: [
         'Seherin: Wird als Werwolf erkannt',
         'Leibwächter: Kann das Opfer beschützen',
-        'Jäger: Kann beim Tod einen Werwolf mitnehmen'
+        'Jäger: Kann beim Tod einen Dorbewohner oder Werwolf mitnehmen'
       ],
       tips: [
         'Versuche tagsüber unauffällig zu bleiben',
