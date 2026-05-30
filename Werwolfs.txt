@@ -1,0 +1,27 @@
+#### Metriken (zum Auswählen)
+
+-   Erreichte Ziele (übererfüllt?)
+    - erreichbar per url ⇒ https://freedns.afraid.org/
+    - Übersichts Seite mit Auswahl der Karten
+    - Jede Karte bekommt eigene Seite mit Erklärung, besonderen interaktionen, alles auf einen blick
+      - Erstmal eine Karte vollständig und bei den anderen Titel plus Platzhalter
+    - UI mit Darstellung der Karten
+    - Suchfunktion
+    - Laptop als Server im Heimnetz, port forwarding
+    - java und spring boot backend
+    - Passwortschutz (für Urheberrecht)
+    
+-   Besonders gut (bis 0,5 besser)? Wählen Sie **eins** aus:
+    -   [ ] Passende Tests,
+    -   [ ] Verständlichen Quellcode,
+    -   [ ] Dokumentation/Kommentare für komplizierte Stellen,
+    -   [ ] Einfaches Deployment/einfache Ausführbarkeit,
+    -   [ ] Besonders Effizient,
+    -   [ ] Besonders Gut Skalierbar?
+    -   [ ] Angriffe in threat model analysiert und erkannte verhindert?
+    -   [x] Besonders gute UX/UI
+    -   [ ] Korrektheit formal beweisen
+    -   [ ] …
+-   [ ] Ausführung funktioniert lokal / wurde als Video gezeigt?
+-   [ ] Hat ein Readme, das erklärt, wie sie ausgeführt werden kann (oder wie sie gezeigt wurde).
+
