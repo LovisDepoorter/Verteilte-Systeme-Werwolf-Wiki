@@ -1,7 +1,7 @@
 export interface WerwolfCard {
   id: string;
   name: string;
-  team: 'dorfbewohner' | 'werwolf' | 'neutral' | 'liebende';
+  team: 'dorfbewohner' | 'werwolf' | 'neutral';
   imageUrl: string;
   description: string;
   specialAbilities: string[];
@@ -10,4 +10,4 @@ export interface WerwolfCard {
   tips?: string[];
 }
 
-export type CardTeam = 'dorfbewohner' | 'werwolf' | 'neutral' | 'liebende' | 'alle';
+export type CardTeam = 'dorfbewohner' | 'werwolf' | 'neutral' | 'alle';

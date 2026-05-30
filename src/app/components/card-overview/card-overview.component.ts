@@ -347,10 +347,6 @@ import { WerwolfCard, CardTeam } from '../../models/werwolf-card.model';
       background: linear-gradient(135deg, #3A3A3A 0%, var(--black) 100%);
     }
 
-    .team-liebende .placeholder-image {
-      background: linear-gradient(135deg, var(--blood-red) 0%, var(--blood-dark) 100%);
-    }
-
     .card-content {
       padding: 2rem;
       flex: 1;
@@ -395,12 +391,6 @@ import { WerwolfCard, CardTeam } from '../../models/werwolf-card.model';
       background: var(--black);
       color: var(--white-dirty);
       border-color: var(--gray-dark);
-    }
-
-    .badge-liebende {
-      background: var(--blood-red);
-      color: var(--white);
-      border-color: var(--blood-light);
     }
 
     .card-description {
@@ -526,7 +516,7 @@ export class CardOverviewComponent implements OnInit {
   searchQuery: string = '';
   selectedTeam: CardTeam = 'alle';
 
-  teams: CardTeam[] = ['alle', 'dorfbewohner', 'werwolf', 'neutral', 'liebende'];
+  teams: CardTeam[] = ['alle', 'dorfbewohner', 'werwolf', 'neutral'];
 
   constructor(private cardService: CardService) {}
 
@@ -555,8 +545,7 @@ export class CardOverviewComponent implements OnInit {
       'alle': 'Alle',
       'dorfbewohner': 'Dorfbewohner',
       'werwolf': 'Werwölfe',
-      'neutral': 'Neutral',
-      'liebende': 'Liebende'
+      'neutral': 'Neutral'
     };
     return labels[team] || team;
   }
