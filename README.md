@@ -1,179 +1,148 @@
-# 🐺 Werwolf Wiki
+# 🐺 Werwölfe von Düsterwald Wiki
 
-Ein umfassendes Wiki für das Werwolf-Spiel, entwickelt mit Angular. Diese Anwendung bietet eine übersichtliche Darstellung aller Werwolf-Karten mit detaillierten Informationen, Suchfunktion und benutzerfreundlichem UI.
+Ein Wiki-Projekt für das Kartenspiel "Werwölfe von Düsterwald", entwickelt im Rahmen der Vorlesung **Verteilte Systeme** an der DHBW.
 
-Repository for a wiki like project for a lecture at the DHBW
+Die Anwendung ist erreichbar unter: **[werwolf-wiki.de](http://werwolf-wiki.de)**
 
-## ✨ Features
+---
 
-- 📋 **Übersichtsseite** mit allen Werwolf-Karten
-- 🔍 **Suchfunktion** zum Durchsuchen der Karten nach Namen, Rollen und Fähigkeiten
-- 🏷️ **Filterung** nach Teams (Dorfbewohner, Werwölfe, Neutral, Liebende)
-- 📱 **Detailseiten** für jede Karte mit:
-  - Beschreibung der Rolle
-  - Besondere Fähigkeiten
-  - Aufwachreihenfolge in der Nacht
-  - Interaktionen mit anderen Rollen
-  - Tipps & Strategien
-- 🎨 **Modernes, responsives Design** für optimale UX/UI
-- 📱 **Mobile-First** Ansatz für alle Geräte
+## Architektur
 
-## 🚀 Installation & Start
+```
+Internet
+  → werwolf-wiki.de (Domain via IONOS)
+  → Strato VPS (Nginx Reverse Proxy)
+  → WireGuard Tunnel (VPN)
+  → Heimlaptop (Spring Boot Backend + PostgreSQL)
+```
+
+Das System besteht aus zwei physisch getrennten Maschinen, die über einen verschlüsselten WireGuard-Tunnel verbunden sind. Der VPS übernimmt die Rolle des Reverse Proxys und leitet alle Anfragen an den Heimlaptop weiter, auf dem das eigentliche Backend und die Datenbank laufen.
+
+---
+
+## Projektstruktur
+
+```
+repo/
+├── src/                        ← Angular Frontend (Angular 18)
+│   └── app/
+│       ├── components/         ← Login, Kartenübersicht, Kartendetail
+│       ├── services/           ← AuthService, CardService
+│       ├── models/             ← WerwolfCard Model
+│       └── guards/             ← Auth Guard
+├── werwolf-wiki/               ← Spring Boot Backend
+│   └── src/main/java/com/werwolfwiki/
+│       ├── controller/         ← ArtikelController, AuthController
+│       ├── service/            ← ArtikelService
+│       ├── repository/         ← ArtikelRepository
+│       ├── model/              ← Artikel Entity
+│       ├── security/           ← JWT Filter, SecurityConfig
+│       └── dto/                ← LoginRequest, LoginResponse, ArtikelDTO
+├── design-system/              ← Design System Dokumentation
+├── angular.json
+├── package.json
+└── tsconfig.json
+```
+
+---
+
+## Technologie-Stack
+
+### Frontend
+- **Angular 18** – Standalone Components, Routing, Guards
+- **TypeScript** – Typsicheres JavaScript
+- **CSS3** – Dark/Blood Theme mit CSS Variablen
+
+### Backend
+- **Java 21** – Programmiersprache
+- **Spring Boot 3.3** – Web Framework
+- **Spring Security** – Authentifizierung & Autorisierung
+- **JWT (JSON Web Token)** – Stateless Authentifizierung
+- **Spring Data JPA / Hibernate** – Datenbankzugriff
+- **PostgreSQL** – Relationale Datenbank
+- **Swagger/OpenAPI** – API Dokumentation
+
+### Infrastruktur
+- **Docker & Docker Compose** – Containerisierung
+- **Nginx** – Reverse Proxy
+- **WireGuard** – VPN Tunnel zwischen VPS und Heimlaptop
+- **Strato VPS** – Cloud Server als Reverse Proxy
+- **IONOS** – Domain Provider
+
+---
+
+## Features
+
+- Übersichtsseite mit allen Werwolf-Karten
+- Suchfunktion nach Titel
+- Filterung nach Kategorie (Werwolf, Dorfbewohner, Neutral)
+- Detailseite pro Karte
+- Passwortschutz (globales Passwort, JWT-basiert)
+- REST API mit vollständigem CRUD
+- Swagger UI unter `/swagger-ui.html`
+
+---
+
+## Erreichte Ziele
+
+- ✅ Erreichbar per URL (`werwolf-wiki.de`)
+- ✅ Übersichtsseite mit Kartenauswahl
+- ✅ Detailseiten pro Karte
+- ✅ Suchfunktion
+- ✅ Passwortschutz über Backend (JWT)
+- ✅ Spring Boot Backend
+- ✅ PostgreSQL Datenbank
+- ✅ Verteiltes System (VPS + Heimlaptop via WireGuard)
+- ✅ Docker Compose Deployment
+- ✅ Besonders gute UX/UI (Dark Theme, Animationen, Responsive)
+
+---
+
+## Lokale Entwicklung
 
 ### Voraussetzungen
+- Node.js 20+
+- Java 21
+- Docker & Docker Compose
 
-- Node.js (Version 18 oder höher)
-- npm (kommt mit Node.js)
-
-### Schritt 1: Abhängigkeiten installieren
-
+### Frontend starten
 ```bash
 npm install
-```
-
-### Schritt 2: Entwicklungsserver starten
-
-```bash
 npm start
 ```
+Frontend läuft unter `http://localhost:4200`
 
-Die Anwendung ist nun unter `http://localhost:4200` erreichbar.
-
-### Schritt 3: Production Build erstellen
-
+### Backend starten
 ```bash
-npm run build
+cd werwolf-wiki
+docker compose up -d
 ```
+Backend läuft unter `http://localhost:8080`
+Swagger UI: `http://localhost:8080/swagger-ui.html`
 
-Die Build-Dateien befinden sich im Ordner `dist/werwolf-wiki`.
+---
 
-## 📁 Projektstruktur
+## API Endpunkte
 
-```
-src/
-├── app/
-│   ├── components/
-│   │   ├── card-overview/         # Übersichtsseite
-│   │   └── card-detail/           # Detailansicht
-│   ├── models/
-│   │   └── werwolf-card.model.ts  # Datenmodell
-│   ├── services/
-│   │   └── card.service.ts        # Datenservice
-│   ├── app.component.ts           # Hauptkomponente
-│   ├── app.routes.ts              # Routing
-│   └── app.config.ts              # App-Konfiguration
-├── index.html
-├── main.ts
-└── styles.css
-```
+| Methode | URL | Beschreibung | Auth |
+|---------|-----|--------------|------|
+| POST | `/api/auth/login` | Login, gibt JWT Token zurück | Nein |
+| GET | `/api/artikel` | Alle Artikel abrufen | JWT |
+| GET | `/api/artikel/{id}` | Artikel nach ID | JWT |
+| GET | `/api/artikel/suche?q=Begriff` | Artikel suchen | JWT |
+| GET | `/api/artikel/kategorie/{kat}` | Nach Kategorie filtern | JWT |
+| POST | `/api/artikel` | Neuen Artikel erstellen | JWT |
+| PUT | `/api/artikel/{id}` | Artikel bearbeiten | JWT |
+| DELETE | `/api/artikel/{id}` | Artikel löschen | JWT |
 
-## 🎮 Verwendung
+---
 
-### Hauptseite
+## Authentifizierung
 
-Die Hauptseite zeigt alle verfügbaren Werwolf-Karten in einer Grid-Ansicht:
-- Jede Karte zeigt Name, Team und eine Kurzbeschreibung
-- Klicke auf "Details ansehen", um zur Detailseite zu gelangen
+Die Wiki-Seite ist durch ein globales Passwort geschützt. Nach erfolgreichem Login gibt das Backend einen **JWT Token** zurück, der bei allen weiteren API-Anfragen im `Authorization: Bearer <token>` Header mitgeschickt wird. Der Token ist 24 Stunden gültig.
 
-### Suchfunktion
+---
 
-Die Suchfunktion durchsucht:
-- Kartennamen
-- Rollenbeschreibungen
-- Fähigkeiten
-- Team-Zugehörigkeiten
+## Entwickelt von Leonhard Zeller und Lovis Depoorter
 
-### Filterung
-
-Filtere Karten nach Teams:
-- **Alle**: Zeigt alle Karten
-- **Dorfbewohner**: Zeigt nur Dorfbewohner-Karten
-- **Werwölfe**: Zeigt nur Werwolf-Karten
-- **Neutral**: Zeigt neutrale Rollen
-- **Liebende**: Zeigt Liebenden-bezogene Karten
-
-### Detailansicht
-
-Jede Karte hat eine dedizierte Detailseite mit:
-- Großem Kartenbildbereich (Platzhalter)
-- Vollständiger Beschreibung
-- Liste der besonderen Fähigkeiten
-- Aufwachreihenfolge (falls zutreffend)
-- Interaktionen mit anderen Rollen
-- Strategische Tipps
-
-## 🎨 Design & UX
-
-Das Design fokussiert sich auf:
-- **Klare Hierarchie**: Wichtige Informationen sind sofort sichtbar
-- **Farbcodierung**: Jedes Team hat eigene Farben (Werwölfe: Rot, Dorfbewohner: Grün, etc.)
-- **Smooth Animations**: Sanfte Übergänge für bessere UX
-- **Responsive Layout**: Optimiert für Desktop, Tablet und Mobile
-- **Accessibility**: Kontrastreiche Farben und lesbare Schriftgrößen
-
-## 🛠️ Technologie-Stack
-
-- **Angular 18**: Moderne Web-Framework
-- **TypeScript**: Typsicheres JavaScript
-- **RxJS**: Reaktive Programmierung
-- **Standalone Components**: Moderne Angular-Architektur
-- **CSS3**: Modernes Styling mit Flexbox und Grid
-
-## 📝 Verfügbare Karten
-
-Aktuell sind folgende Karten implementiert:
-- Werwolf
-- Seherin
-- Hexe
-- Jäger
-- Amor
-- Leibwächter
-- Einfacher Dorfbewohner
-- Mädchen
-
-Weitere Karten können einfach im `CardService` hinzugefügt werden.
-
-## 🔒 Passwortschutz
-
-Für den Produktionsbetrieb kann ein Passwortschutz implementiert werden:
-1. HTTP Basic Auth über den Webserver (nginx/Apache)
-2. Angular Guard für zusätzliche Sicherheit
-3. Backend-Integration für robuste Authentifizierung
-
-## 🌐 Deployment
-
-### Lokales Netzwerk (mit Port Forwarding)
-
-1. Build erstellen: `npm run build`
-2. Dateien aus `dist/werwolf-wiki` auf Server kopieren
-3. Webserver (z.B. nginx) konfigurieren
-4. Port Forwarding im Router einrichten
-5. Domain via freedns.afraid.org einrichten
-
-### Beispiel nginx Konfiguration
-
-```nginx
-server {
-    listen 80;
-    server_name deine-domain.com;
-
-    root /pfad/zu/dist/werwolf-wiki/browser;
-    index index.html;
-
-    location / {
-        try_files $uri $uri/ /index.html;
-    }
-}
-```
-
-## 📄 Lizenz
-
-Dieses Projekt wurde für Bildungszwecke erstellt.
-
-## 👤 Autor
-
-Entwickelt im Rahmen des Kurses "Verteilte Systeme" an der DHBW
-
-## 🤝 Beitragen
-
-Weitere Karten können durch Erweiterung des `cards`-Arrays im `CardService` hinzugefügt werden
+Entwickelt im Rahmen des Kurses **Verteilte Systeme** an der DHBW.
