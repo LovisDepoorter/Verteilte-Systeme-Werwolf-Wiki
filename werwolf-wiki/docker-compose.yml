@@ -1,0 +1,61 @@
+services:
+
+  db:
+    image: postgres:16
+    container_name: wiki_db
+    restart: always
+    environment:
+      POSTGRES_DB: werwolf_wiki
+      POSTGRES_USER: wiki_user
+      POSTGRES_PASSWORD: hier_passwort_eintragen
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+    networks:
+      - wiki_network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U wiki_user -d werwolf_wiki"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: wiki_backend
+    restart: always
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/werwolf_wiki
+      SPRING_DATASOURCE_USERNAME: wiki_user
+      SPRING_DATASOURCE_PASSWORD: hier_passwort_eintragen
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - wiki_network
+
+  nginx:
+    image: nginx:alpine
+    container_name: wiki_nginx
+    restart: always
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./frontend:/usr/share/nginx/html:ro
+    depends_on:
+      - backend
+    networks:
+      - wiki_network
+
+networks:
+  wiki_network:
+    driver: bridge
+
+volumes:
+  postgres_data:
